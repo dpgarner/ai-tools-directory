@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>check2</title>
+<style>body{margin:0;background:#eee;font:600 13px Consolas,monospace}
+.row{display:flex;gap:12px;padding:12px}
+iframe{border:0;background:#fff;display:block;width:390px;height:844px}</style></head>
+<body>
+<div class="row">
+  <iframe id="ih" src="../site/index.html"></iframe>
+  <iframe id="ib" src="../site/index.html#/browse"></iframe>
+  <iframe id="if" src="../site/index.html#/favorites"></iframe>
+</div>
+<pre id="r"></pre>
+<script>
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    var lines = [];
+    function probe(id, label){
+      var f = document.getElementById(id);
+      var d = f.contentDocument, w = f.contentWindow;
+      var sh = d.documentElement.scrollHeight;
+      var ih = w.innerHeight;
+      var ft = d.querySelector('.footer');
+      var fb = ft ? Math.round(ft.getBoundingClientRect().bottom) : -1;
+      lines.push(label + ': innerH=' + ih + ' scrollH=' + sh + ' footerBottom=' + fb + (fb === -1 ? '' : (Math.abs(fb - ih) <= 2 ? ' FLUSH' : ' GAP=' + (ih - fb))));
+    }
+    function probeChips(){
+      var d = document.getElementById('ib').contentDocument;
+      var row = d.getElementById('catChips');
+      var cs = d.defaultView.getComputedStyle(row);
+      var mask = (cs.maskImage && cs.maskImage !== 'none') ? 'MASK-OK' : ((cs.webkitMaskImage && cs.webkitMaskImage !== 'none') ? 'MASK-WEBKIT-OK' : 'MASK-NONE');
+      var chip = row.querySelector('.chip');
+      var cw = Math.round(chip.getBoundingClientRect().width);
+      var csh = chip.scrollWidth;
+      var cch = chip.clientWidth;
+      lines.push('chips: rowScrollW=' + row.scrollWidth + ' rowClientW=' + row.clientWidth + ' firstChipW=' + cw + ' chipScrollW=' + csh + ' chipClientW=' + cch + ' ' + mask);
+    }
+    try { probe('ih','HOME'); probe('ib','BROWSE'); probe('if','FAVORITES'); probeChips(); }
+    catch (e) { lines.push('ERR ' + e.message); }
+    var txt = lines.join('\n');
+    document.getElementById('r').textContent = txt;
+    try { fetch('/__log?d=' + encodeURIComponent(txt)).catch(function(){}); } catch (e2) {}
+  }, 1800);
+});
+</script>
+</body></html>

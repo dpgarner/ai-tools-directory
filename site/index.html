@@ -1,0 +1,238 @@
+<!doctype html>
+<!--
+  AI Atlas — a curated directory of AI tools.
+  Discovery: static directory site · editorial warm-minimalist direction ·
+  10 categories / 103 tools · favorites via localStorage · no external assets
+  (strict-CSP static hosting) · vanilla HTML/CSS/JS, hash routing only.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Atlas — a curated directory of AI tools</title>
+  <meta name="description" content="A hand-curated directory of 103 AI tools across 10 categories. Browse by category, save favorites, and find what to try next — no account required.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#fafaf7">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- icon sprite -->
+  <svg hidden aria-hidden="true" focusable="false">
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5 21 21"></path>
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20.1C7.4 16.8 4.3 13.9 4.3 10.4c0-2.6 1.9-4.5 4.1-4.5 1.5 0 2.8.7 3.6 1.9.8-1.2 2.1-1.9 3.6-1.9 2.2 0 4.1 1.9 4.1 4.5 0 3.5-3.1 6.4-7.7 9.7z"></path>
+    </symbol>
+    <symbol id="i-heart-fill" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20.1C7.4 16.8 4.3 13.9 4.3 10.4c0-2.6 1.9-4.5 4.1-4.5 1.5 0 2.8.7 3.6 1.9.8-1.2 2.1-1.9 3.6-1.9 2.2 0 4.1 1.9 4.1 4.5 0 3.5-3.1 6.4-7.7 9.7z"></path>
+    </symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h13"></path><path d="m13 7 5 5-5 5"></path>
+    </symbol>
+    <symbol id="i-arrow-ur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 17 17 7"></path><path d="M9 7h8v8"></path>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <path d="m6 6 12 12"></path><path d="M18 6 6 18"></path>
+    </symbol>
+    <symbol id="i-card-stack" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="7" y="4.5" width="10" height="3.4" rx="1"></rect>
+      <rect x="5.5" y="10.3" width="13" height="3.4" rx="1"></rect>
+      <rect x="7" y="16.1" width="10" height="3.4" rx="1"></rect>
+    </symbol>
+  </svg>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#/">
+        <svg class="brand-mark" aria-hidden="true"><use href="#i-card-stack"></use></svg>
+        <span>AI Atlas</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#/browse" data-nav="browse">Browse</a>
+        <a href="#/favorites" data-nav="favorites">Favorites <span class="nav-count num" id="favCount" hidden>0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <noscript><p class="container noscript">AI Atlas needs JavaScript for browsing and favorites. Please enable it and reload.</p></noscript>
+
+    <!-- ══ HOME ══════════════════════════════════════════════════ -->
+    <section id="view-home" class="view">
+      <section class="hero section" data-od-id="hero">
+        <div class="container">
+          <p class="eyebrow">AI Atlas · <span data-count="edition">Edition 01</span></p>
+          <h1>Every AI tool worth your time, in one index.</h1>
+          <p class="lead">A hand-curated directory of <span data-count="tools">103</span> tools across <span data-count="cats">10</span> categories. Browse by what you’re doing, save a shortlist, and find what to try next.</p>
+          <form class="hero-search" id="heroSearchForm" role="search">
+            <svg class="ic" aria-hidden="true"><use href="#i-search"></use></svg>
+            <input id="heroSearch" type="search" placeholder="Search tools — try “video” or “notebook”…" aria-label="Search tools" autocomplete="off">
+            <kbd class="kbd" aria-hidden="true">/</kbd>
+          </form>
+          <p class="hero-meta meta"><span data-count="tools">103</span> tools · <span data-count="cats">10</span> categories · <span data-count="free">90</span> free to start</p>
+        </div>
+      </section>
+
+      <section class="section" data-od-id="picks">
+        <div class="container">
+          <div class="sec-head">
+            <div>
+              <h2>Editor’s picks</h2>
+              <p class="dek">Four tools we keep reaching for — and why.</p>
+            </div>
+          </div>
+          <div class="picks" id="picksList"></div>
+        </div>
+      </section>
+
+      <section class="section" data-od-id="categories">
+        <div class="container">
+          <div class="sec-head">
+            <div>
+              <h2>Browse the index</h2>
+              <p class="dek">Ten shelves, one hundred and change tools.</p>
+            </div>
+            <a class="more-link" href="#/browse">Browse all<svg class="ic" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+          <div class="cat-grid" id="catGrid"></div>
+        </div>
+      </section>
+
+      <section class="section" data-od-id="shelf">
+        <div class="container">
+          <div class="sec-head">
+            <div>
+              <h2>The starter shelf</h2>
+              <p class="dek">Eight picks for a new toolbox — free or cheap to try.</p>
+            </div>
+          </div>
+          <div class="shelf-grid" id="shelfList"></div>
+        </div>
+      </section>
+
+      <section class="section" data-od-id="for-you">
+        <div class="container" id="forYou"></div>
+      </section>
+    </section>
+
+    <!-- ══ BROWSE ════════════════════════════════════════════════ -->
+    <section id="view-browse" class="view" hidden>
+      <section class="page-head" data-od-id="browse-header">
+        <div class="container">
+          <p class="eyebrow">The index</p>
+          <h1>Browse all tools</h1>
+          <p class="meta" id="browseCount" aria-live="polite"></p>
+        </div>
+      </section>
+      <div class="toolbar-wrap" data-od-id="browse-toolbar">
+        <div class="container toolbar">
+          <form class="tb-search" id="browseSearchForm" role="search">
+            <svg class="ic" aria-hidden="true"><use href="#i-search"></use></svg>
+            <input id="browseSearch" type="search" placeholder="Search the index…" aria-label="Search the index" autocomplete="off">
+            <button class="tb-clear" id="browseClear" type="button" aria-label="Clear search" hidden><svg class="ic" aria-hidden="true"><use href="#i-close"></use></svg></button>
+          </form>
+          <div class="chip-row" id="catChips" role="group" aria-label="Filter by category"></div>
+          <div class="tb-selects">
+            <label class="select">
+              <span class="sr-only">Filter by price</span>
+              <select id="priceSel">
+                <option value="any">Any price</option>
+                <option value="free">Free</option>
+                <option value="freemium">Freemium</option>
+                <option value="paid">Paid</option>
+              </select>
+            </label>
+            <label class="select">
+              <span class="sr-only">Sort order</span>
+              <select id="sortSel">
+                <option value="curated">Curated order</option>
+                <option value="az">Name A–Z</option>
+                <option value="category">By category</option>
+              </select>
+            </label>
+            <button class="btn btn-ghost btn-sm" id="resetBtn" type="button" hidden>Reset</button>
+          </div>
+        </div>
+      </div>
+      <section class="section-sm" data-od-id="grid">
+        <div class="container">
+          <div class="tool-grid" id="toolGrid"></div>
+          <div class="empty" id="browseEmpty" hidden>
+            <p class="empty-title" id="browseEmptyTitle">No tools match your search.</p>
+            <p class="empty-sub">Try a different keyword, or clear the filters.</p>
+            <button class="btn btn-secondary" id="emptyResetBtn" type="button">Clear all filters</button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ══ FAVORITES ═════════════════════════════════════════════ -->
+    <section id="view-favorites" class="view" hidden>
+      <section class="page-head" data-od-id="favorites-header">
+        <div class="container">
+          <p class="eyebrow">Your shortlist</p>
+          <h1>Favorites</h1>
+          <div class="head-row">
+            <p class="meta" id="favMeta">0 saved · stored in this browser</p>
+            <button class="btn btn-ghost btn-sm" id="clearFavBtn" type="button" hidden>Clear all</button>
+          </div>
+        </div>
+      </section>
+      <section class="section-sm">
+        <div class="container">
+          <div class="tool-grid" id="favGrid"></div>
+          <div class="empty" id="favEmpty" hidden>
+            <svg class="empty-heart" aria-hidden="true"><use href="#i-heart"></use></svg>
+            <p class="empty-title">Nothing saved yet.</p>
+            <p class="empty-sub">Tap the heart on any tool to start your shortlist. It’s kept in this browser, so no account is needed.</p>
+            <a class="btn btn-primary" href="#/browse">Browse tools</a>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="favRecsSection" data-od-id="recommendations" hidden>
+        <div class="container">
+          <div class="sec-head">
+            <div>
+              <h2>Based on your favorites</h2>
+              <p class="dek">More from the shelves you’re exploring.</p>
+            </div>
+            <a class="more-link" href="#/browse">Browse all<svg class="ic" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+          <div class="rec-list" id="favRecs"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer" data-od-id="footer">
+    <div class="container">
+      <div class="foot-top">
+        <div class="foot-brand-wrap">
+          <span class="foot-brand">AI Atlas</span>
+          <p class="foot-tag">A hand-curated index of AI tools.</p>
+        </div>
+        <p class="meta">Edition 01 · September 2026 · <span data-count="tools">103</span> tools</p>
+      </div>
+      <div class="foot-row">
+        <p class="meta">Favorites are stored in your browser only — no accounts, no tracking.</p>
+        <nav class="foot-links" aria-label="Footer">
+          <a href="#/browse">Browse</a>
+          <a href="#/favorites">Favorites</a>
+          <a href="#" id="toTop">Top</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <div id="modalRoot" hidden></div>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script defer src="assets/data.js"></script>
+  <script defer src="assets/app.js"></script>
+</body>
+</html>

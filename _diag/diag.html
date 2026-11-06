@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>pending</title>
+<style>
+ body{margin:0;background:#fff;font:700 22px Consolas,monospace}
+ #r{white-space:pre-wrap;word-break:break-all;padding:14px;color:#000}
+ iframe{width:390px;height:900px;border:0;display:block;outline:2px solid #f00}
+</style></head>
+<body>
+<iframe id="f" src="../site/index.html"></iframe>
+<pre id="r">pending</pre>
+<script>
+window.addEventListener('load', function(){ setTimeout(function(){
+  var txt='';
+  try {
+    var d=document.getElementById('f').contentDocument;
+    var W=390;
+    var sw=Math.max(d.documentElement.scrollWidth, d.body.scrollWidth);
+    var bad=[];
+    var all=d.querySelectorAll('body *');
+    for(var i=0;i<all.length;i++){
+      var el=all[i]; var r=el.getBoundingClientRect();
+      if(r.width>W+1 || r.right>W+1.5){
+        var cls='';
+        try{ cls=(typeof el.className==='string')?el.className:(el.getAttribute('class')||''); }catch(e2){}
+        var id=el.getAttribute('id')||'';
+        bad.push(el.tagName.toLowerCase()+(id?('#'+id):'')+(cls?('.'+cls.split(' ').join('.')):'')+' w='+Math.round(r.width)+' r='+Math.round(r.right));
+      }
+    }
+    txt='SCROLLWIDTH='+sw+'\nOFFENDERS='+bad.length+'\n'+bad.slice(0,25).join('\n');
+  } catch(e){ txt='ACCESS FAIL: '+e.message; }
+  document.getElementById('r').textContent=txt;
+  document.title='DIAG DONE';
+  try { fetch('/__log?d='+encodeURIComponent(txt)).catch(function(){}); } catch(e3){}
+},1500); });
+</script>
+</body></html>

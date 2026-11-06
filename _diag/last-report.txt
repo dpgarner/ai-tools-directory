@@ -1,0 +1,4 @@
+HOME: innerH=844 scrollH=4113 footerBottom=4113 GAP=-3269
+BROWSE: innerH=844 scrollH=24745 footerBottom=24745 GAP=-23901
+FAVORITES: innerH=844 scrollH=968 footerBottom=968 GAP=-124
+chips: rowScrollW=1655 rowClientW=390 firstChipW=40 chipScrollW=38 chipClientW=38 MASK-OK
